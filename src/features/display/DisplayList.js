@@ -6,11 +6,14 @@ import { selectFeaturedPromotion } from "../promotions/promotionsSlice";
 import { selectFeaturedPartner } from "../partners/partnersSlice";
 
 const DisplayList = () => {
-  const featuredCampsite = useSelector(selectFeaturedCampsite);
-  const featuredPromotion = useSelector(selectFeaturedPromotion);
-  const featuredPartner = useSelector(selectFeaturedPartner);
+  const items = useSelector((state) => [
+    selectFeaturedCampsite(state),
+    selectFeaturedPromotion(state),
+    selectFeaturedPartner(state),
+  ]);
 
-  const items = [featuredCampsite, featuredPromotion, featuredPartner];
+  // Log items for debugging
+  console.log("display items:", items);
 
   return (
     <Row>
