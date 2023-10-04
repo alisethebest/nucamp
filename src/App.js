@@ -1,3 +1,6 @@
+import React, { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { fetchCampsites } from "./features/campsites/campsitesSlice"; // Make sure to update this path to the actual path in your project
 import { Routes, Route } from "react-router-dom";
 import ContactPage from "./pages/ContactPage";
 import HomePage from "./pages/HomePage";
@@ -9,15 +12,23 @@ import CampsiteDetailPage from "./pages/CampsiteDetailPage";
 import "./App.css";
 
 function App() {
+  // Initialize the Redux dispatch function
+  const dispatch = useDispatch();
+
+  // Use the useEffect hook to fetch campsites data when the App component mounts
+  useEffect(() => {
+    dispatch(fetchCampsites());
+  }, [dispatch]);
+
   return (
     <div className="App">
       <Header />
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/about" element={<AboutPage />} />
-        <Route path="contact" element={<ContactPage />} />
-        <Route path="directory" element={<CampsitesDirectoryPage />} />
-        <Route path="directory/:campsiteId" element={<CampsiteDetailPage />} />
+        <Route path="/contact" element={<ContactPage />} />
+        <Route path="/directory" element={<CampsitesDirectoryPage />} />
+        <Route path="/directory/:campsiteId" element={<CampsiteDetailPage />} />
       </Routes>
       <Footer />
     </div>
