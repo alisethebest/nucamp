@@ -1,5 +1,4 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-// import { CAMPSITES } from '../../app/shared/CAMPSITES';
 import { baseUrl } from "../../app/shared/baseUrl";
 import { mapImageURL } from "../../utils/mapImageURL";
 
@@ -53,6 +52,13 @@ export const selectCampsiteById = (id) => (state) => {
   );
 };
 
+// Updated selectFeaturedCampsite selector
 export const selectFeaturedCampsite = (state) => {
-  return state.campsites.campsitesArray.find((campsite) => campsite.featured);
+  return {
+    featuredItem: state.campsites.campsitesArray.find(
+      (campsite) => campsite.featured
+    ),
+    isLoading: state.campsites.isLoading,
+    errMsg: state.campsites.errMsg,
+  };
 };

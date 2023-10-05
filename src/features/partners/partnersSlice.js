@@ -15,10 +15,15 @@ export const fetchPartners = createAsyncThunk(
   }
 );
 
-// Selector to get the featured partner
+// Updated selector to get the featured partner
 export const selectFeaturedPartner = (state) => {
-  // Replace this logic with whatever you want
-  return state.partners.partnersArray.find((partner) => partner.featured);
+  return {
+    featuredItem: state.partners.partnersArray.find(
+      (partner) => partner.featured
+    ),
+    isLoading: state.partners.isLoading,
+    errMsg: state.partners.errMsg,
+  };
 };
 
 const initialState = {
