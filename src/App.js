@@ -1,7 +1,8 @@
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { fetchCampsites } from "./features/campsites/campsitesSlice";
-import { fetchPartners } from "./features/partners/partnersSlice"; // Make sure to update this path to the actual path in your project
+import { fetchPartners } from "./features/partners/partnersSlice";
+import { fetchPromotions } from "./app/shared/oldData/promotionsSlice"; // Added this import
 import { Routes, Route } from "react-router-dom";
 import ContactPage from "./pages/ContactPage";
 import HomePage from "./pages/HomePage";
@@ -16,10 +17,11 @@ function App() {
   // Initialize the Redux dispatch function
   const dispatch = useDispatch();
 
-  // Use the useEffect hook to fetch campsites and partners data when the App component mounts
+  // Use the useEffect hook to fetch campsites, partners, and promotions data when the App component mounts
   useEffect(() => {
     dispatch(fetchCampsites());
-    dispatch(fetchPartners()); // Added this line to fetch partners
+    dispatch(fetchPartners());
+    dispatch(fetchPromotions()); // Added this line to fetch promotions
   }, [dispatch]);
 
   return (
