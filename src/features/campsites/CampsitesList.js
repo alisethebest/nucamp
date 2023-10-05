@@ -1,26 +1,41 @@
-import { Col, Row } from "reactstrap";
-import { useSelector } from "react-redux"; // Import useSelector
-import CampsiteCard from "./CampsiteCard";
-import { selectAllCampsites } from "./campsitesSlice";
+import React from "react";
+import { useSelector } from "react-redux";
+import { Row, Col } from "reactstrap"; // Assuming you're using Reactstrap
+import Loading from "../../components/Loading"; // Make sure to import from the correct path
+import Error from "../../components/Error" // Make sure to import from the correct path
 
 const CampsitesList = () => {
-  // Use useSelector hook to get campsites from Redux state
-  const campsites = useSelector(selectAllCampsites);
+  const campsitesArray = useSelector((state) => state.campsites.campsitesArray);
+  const isLoading = useSelector((state) => state.campsites.isLoading);
+  const errMsg = useSelector((state) => state.campsites.errMsg);
 
-  // Log campsites for debugging
-  console.log("campsites:", campsites);
+   if (isLoading) {
+     return (
+       <Row>
+         <Loading />
+       </Row>
+     );
+   }
 
-  return (
-    <Row className="ms-auto">
-      {campsites.map((campsite) => {
-        return (
-          <Col md="5" className="m-4" key={campsite.id}>
-            <CampsiteCard campsite={campsite} />
-          </Col>
-        );
-      })}
-    </Row>
-  );
+   if (errMsg) {
+     return (
+       <Row>
+         <Error errMsg={errMsg} />
+       </Row>
+     );
+   }
+
+  // Assume campsitesArray is an array of objects, each containing a 'name' and an 'id'
+  const renderCampsites = campsitesArray.map((campsite) => {
+    return (
+      <Col sm="4" key={campsite.id}>
+        <div>{campsite.name}</div>
+        {/* Additional campsite details can go here */}
+      </Col>
+    );
+  });
+
+  return <Row>{renderCampsites}</Row>;
 };
 
 export default CampsitesList;

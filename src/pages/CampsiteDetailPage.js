@@ -1,27 +1,40 @@
-import { Container, Row } from "reactstrap";
+import React from "react";
+import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { useSelector } from "react-redux"; // Add this import
-import { selectCampsiteById } from "../features/campsites/campsitesSlice";
+import { Container, Row } from "reactstrap";
+import SubHeader from "../components/SubHeader";
 import CampsiteDetail from "../features/campsites/CampsiteDetail";
 import CommentsList from "../features/comments/CommentsList";
-import SubHeader from "../components/SubHeader";
+import Error from "../components/Error";
+import Loading from "../components/Loading";
+import { selectCampsiteById } from "../features/campsites/campsitesSlice";
 
 const CampsiteDetailPage = () => {
   const { campsiteId } = useParams();
-
-  // Use the useSelector hook instead of directly calling selectCampsiteById
   const campsite = useSelector(selectCampsiteById(campsiteId));
+  console.log("campsite", campsite);
 
-  // Log campsite for debugging
-  console.log("campsite:", campsite);
+  const isLoading = useSelector((state) => state.campsites.isLoading);
+  const errMsg = useSelector((state) => state.campsites.errMsg);
+  let content = null;
+
+  if (isLoading) {
+    content = <Loading />;
+  } else if (errMsg) {
+    content = <Error errMsg={errMsg} />;
+  } else {
+    content = (
+      <>
+        <CampsiteDetail campsite={campsite} />
+        <CommentsList campsiteId={campsiteId} />
+      </>
+    );
+  }
 
   return (
     <Container>
-      <SubHeader current={campsite.name} detail={true} />
-      <Row>
-        <CampsiteDetail campsite={campsite} />
-        <CommentsList campsiteId={campsiteId} />
-      </Row>
+      {campsite && <SubHeader current={campsite.name} detail={true} />}
+      <Row>{content}</Row>
     </Container>
   );
 };
